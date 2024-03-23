@@ -1,0 +1,15 @@
+spring:
+   datasource:
+      username: national_parks
+      password: national_parks
+      url: jdbc:mysql://localhost:3306/national_parks
+      
+   jpa:
+      hibernate:
+         ddl-auto: create
+      show-sql: true
+      defer-datasource-initialization: true
+   sql:
+      init:
+         mode: always
+      
