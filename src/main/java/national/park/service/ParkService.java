@@ -5,19 +5,33 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import national.park.controller.model.ParkData;
 import national.park.controller.model.VisitorData;
+import national.park.controller.model.ParkData.ParkVisitor;
+import national.park.dao.AmenityDao;
+import national.park.dao.ParkDao;
 import national.park.dao.VisitorDao;
+import national.park.entity.Amenity;
+import national.park.entity.Park;
 import national.park.entity.Visitor;
 
 @Service
 public class ParkService {
-
+@Autowired
 	private VisitorDao visitorDao;
+
+@Autowired
+private AmenityDao amenityDao;
+
+@Autowired 
+private ParkDao parkDao;
 
 	
 	@Transactional(readOnly = false)
@@ -30,6 +44,7 @@ public class ParkService {
 	}
 
 	private void setFieldsInVisitor(Visitor visitor, VisitorData visitorData) {
+		visitor.setVisitorId(visitorData.getVisitorId());
 		visitor.setVisitorName(visitorData.getVisitorName());
 		visitor.setVisitorEmail(visitorData.getVisitorEmail());
 	}
@@ -84,6 +99,62 @@ public class ParkService {
 		Visitor visitor = findVisitorById(visitorId);
 		visitorDao.delete(visitor);
 		
+	}
+	
+
+	@Transactional(readOnly= false)
+	public ParkData savePark(Long visitorId, 
+			ParkData parkData) {
+	Visitor visitor = findVisitorById(visitorId);
+	
+	Set<Amenity> amenities =
+			amenityDao.findAllByAmenityIn(parkData.getAmenities());
+	
+	Park park = findOrCreatePark(visitorId, parkData.getParkId());
+	setParkFields(park, parkData);
+	
+	
+	
+	park.getVisitor().add(visitor);
+	visitor.getParks().add(park);
+
+	
+	for(Amenity amenity: amenities) {
+		amenity.getPark().add(park);
+		park.getAmenities().add(amenity);
+	}
+	Park dbPark =parkDao.save(park);
+	return new ParkData(dbPark);
+	}
+
+	private void setParkFields(Park park, ParkData parkData) {
+		park.setParkId(parkData.getParkId());
+		park.setParkName(parkData.getParkName());
+		park.setParkState(parkData.getParkState());
+		park.setGeoLocation(parkData.getGeoLocation());
+		
+		
+	}
+
+	private Park findOrCreatePark(Long visitorId, Long parkId) {
+		Park park;
+		if(Objects.isNull(parkId)) {
+			park= new Park();
+		}
+		
+		else {
+			
+			park = findParkById(parkId);
+	
+		}
+		
+		return park;
+		
+	}
+
+	private Park findParkById(Long parkId) {
+		return parkDao.findById(parkId).orElseThrow(() -> new NoSuchElementException(
+				"Park with ID=" + parkId + " does not exist." ));
 	}
 
 }

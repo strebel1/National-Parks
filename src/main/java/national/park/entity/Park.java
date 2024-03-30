@@ -12,7 +12,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,6 +20,7 @@ import lombok.ToString;
 @Entity
 @Data
 public class Park {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	
@@ -34,15 +34,15 @@ public class Park {
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
 	@OneToMany(mappedBy= "park", cascade = CascadeType.ALL)
-	@JoinColumn(name = "park_id", nullable = false)
+	
 	private Set<Amenity> amenities = new HashSet<>();
 	
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
 	@ManyToMany(cascade = CascadeType.PERSIST)
 	@JoinTable(name = "park_visitor", 
-			joinColumns = @JoinColumn (name = "visitor_id"),
-			inverseJoinColumns =@JoinColumn (name = "park_id"))
+			joinColumns = @JoinColumn (name = "park_id"),
+			inverseJoinColumns =@JoinColumn (name = "visitor_id"))
 	private Set<Visitor> visitor = new HashSet<>();
 	
 	

@@ -20,6 +20,7 @@ public class VisitorData {
 	private Set<ParkResponse> parks = new HashSet<>();
 
 	public VisitorData(Visitor visitor) {
+		visitorId = visitor.getVisitorId();
 		visitorName = visitor.getVisitorName();
 		visitorEmail = visitor.getVisitorEmail();
 
@@ -39,7 +40,7 @@ public class VisitorData {
 		private String parkState;
 		private GeoLocation geoLocation;
 		private Visitor visitorId;
-		private Set<String> amenities = new HashSet<>();
+		private HashSet<String> amenities = new HashSet<>();
 
 		ParkResponse(Park park) {
 			parkId = park.getParkId();
