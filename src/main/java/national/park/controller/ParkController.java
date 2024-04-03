@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.extern.slf4j.Slf4j;
 import national.park.controller.model.ParkData;
 import national.park.controller.model.VisitorData;
+import national.park.entity.Amenity;
 import national.park.service.ParkService;
 
 @RestController
@@ -26,7 +27,7 @@ import national.park.service.ParkService;
 @Slf4j
 public class ParkController {
 	@Autowired
-	private ParkService parkService;
+	private ParkService<Amenity> parkService;
 
 	@PostMapping("/visitor")
 	@ResponseStatus(code = HttpStatus.CREATED)
@@ -78,4 +79,13 @@ public class ParkController {
 				log.info("Creating park {} for visitor with ID= {}", parkData, visitorId);
 				return parkService.savePark(visitorId, parkData);
 			}
+	
+	@GetMapping 
+	public List<Amenity> retrieveAllAmenities(){
+		log.info("Retrieving all amenities");
+		return parkService.retrieveAllAmenities();
+		
+	}
+	
 }
+

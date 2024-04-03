@@ -8,7 +8,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -22,7 +21,8 @@ public class Amenity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	
 	private Long amenityId;
-	@Column(name= "amenityId")
+	//@Column(name= "amenityId")
+	@Column(insertable=false, updatable= false)
 	private String amenityType;
 	
 	@EqualsAndHashCode.Exclude
@@ -30,6 +30,10 @@ public class Amenity {
 	@ManyToOne(cascade =CascadeType.PERSIST)
 	@JoinColumn(name = "park_id")
 	
-	private Park park; 
+	private Park park;
+
+	public String getAmenities() {
+		return amenityType;
+	} 
 	
 }

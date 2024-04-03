@@ -31,19 +31,19 @@ public class ParkData {
 
 	}
 
-	@Data
-	@NoArgsConstructor
-	public static class ParkVisitor{
-		private Long visitorId; 
-		private String visitorEmail;
-		private String visitorName;
-		
-		public ParkVisitor(Visitor visitor) {
-			visitorId =visitor.getVisitorId();
-			visitorName = visitor.getVisitorName();
-			visitorEmail= visitor.getVisitorEmail();
-		
-			
-		}
-	}
+//	@Data
+//	@NoArgsConstructor
+//	//public static class ParkVisitor{
+//		private Long visitorId; 
+//		private String visitorEmail;
+//		private String visitorName;
+//		
+//		public ParkVisitor(Visitor visitor) {
+//			visitorId =visitor.getVisitorId();
+//			visitorName = visitor.getVisitorName();
+//			visitorEmail= visitor.getVisitorEmail();
+//		
+//			
+//		}
+	//}
 }

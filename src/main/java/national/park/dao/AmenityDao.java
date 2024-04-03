@@ -8,7 +8,7 @@ import national.park.entity.Amenity;
 
 public interface AmenityDao extends JpaRepository<Amenity, Long> {
 
-	Set<Amenity> findAllByAmenityIn(Set<String> amenities);
+//	Set<Amenity> findAllByAmenityIn(Set<String> amenities);
 
 
 }

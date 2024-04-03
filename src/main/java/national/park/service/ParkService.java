@@ -1,11 +1,11 @@
 package national.park.service;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import national.park.controller.model.ParkData;
 import national.park.controller.model.VisitorData;
-import national.park.controller.model.ParkData.ParkVisitor;
 import national.park.dao.AmenityDao;
 import national.park.dao.ParkDao;
 import national.park.dao.VisitorDao;
@@ -23,7 +22,7 @@ import national.park.entity.Park;
 import national.park.entity.Visitor;
 
 @Service
-public class ParkService {
+public class ParkService<AmenityType> {
 @Autowired
 	private VisitorDao visitorDao;
 
@@ -106,21 +105,17 @@ private ParkDao parkDao;
 	public ParkData savePark(Long visitorId, 
 			ParkData parkData) {
 	Visitor visitor = findVisitorById(visitorId);
-	
-	Set<Amenity> amenities =
-			amenityDao.findAllByAmenityIn(parkData.getAmenities());
-	
+		
 	Park park = findOrCreatePark(visitorId, parkData.getParkId());
 	setParkFields(park, parkData);
-	
 	
 	
 	park.getVisitor().add(visitor);
 	visitor.getParks().add(park);
 
 	
-	for(Amenity amenity: amenities) {
-		amenity.getPark().add(park);
+	for(Amenity amenity: amenity) {
+		amenity.setPark(park);
 		park.getAmenities().add(amenity);
 	}
 	Park dbPark =parkDao.save(park);
@@ -132,7 +127,6 @@ private ParkDao parkDao;
 		park.setParkName(parkData.getParkName());
 		park.setParkState(parkData.getParkState());
 		park.setGeoLocation(parkData.getGeoLocation());
-		
 		
 	}
 
@@ -149,12 +143,35 @@ private ParkDao parkDao;
 		}
 		
 		return park;
-		
 	}
 
 	private Park findParkById(Long parkId) {
 		return parkDao.findById(parkId).orElseThrow(() -> new NoSuchElementException(
 				"Park with ID=" + parkId + " does not exist." ));
+	}
+	
+	@Transactional(readOnly=true)
+	public List<AmenityType> retrieveAllAmenities(){
+		List<AmenityType> Amenities = null;
+		try {
+			Amenities = retrieveAllAmenities();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		  List<AmenityType> result = new LinkedList<>();
+		
+		for(AmenityType amenityType: Amenities) {
+			Amenity adata = new Amenity();
+		
+			adata.getAmenities();
+			
+			result.add(amenityType);
+		}
+		
+		
+	return Amenities;
+	
 	}
 
 }
