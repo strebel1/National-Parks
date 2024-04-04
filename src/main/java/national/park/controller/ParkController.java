@@ -20,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import national.park.controller.model.ParkData;
 import national.park.controller.model.VisitorData;
 import national.park.entity.Amenity;
+import national.park.service.AmenityData;
 import national.park.service.ParkService;
 
 @RestController
@@ -80,8 +81,8 @@ public class ParkController {
 				return parkService.savePark(visitorId, parkData);
 			}
 	
-	@GetMapping 
-	public List<Amenity> retrieveAllAmenities(){
+	@GetMapping("/amenity")
+	public List<AmenityData> retrieveAllAmenities(){
 		log.info("Retrieving all amenities");
 		return parkService.retrieveAllAmenities();
 		

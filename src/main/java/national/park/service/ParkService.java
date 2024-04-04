@@ -114,10 +114,10 @@ private ParkDao parkDao;
 	visitor.getParks().add(park);
 
 	
-	for(Amenity amenity: amenity) {
-		amenity.setPark(park);
-		park.getAmenities().add(amenity);
-	}
+//	for(Amenity amenity: amenity) {
+//		amenity.setPark(park);
+//		park.getAmenities().add(amenity);
+//	}
 	Park dbPark =parkDao.save(park);
 	return new ParkData(dbPark);
 	}
@@ -149,28 +149,17 @@ private ParkDao parkDao;
 		return parkDao.findById(parkId).orElseThrow(() -> new NoSuchElementException(
 				"Park with ID=" + parkId + " does not exist." ));
 	}
-	
-	@Transactional(readOnly=true)
-	public List<AmenityType> retrieveAllAmenities(){
-		List<AmenityType> Amenities = null;
-		try {
-			Amenities = retrieveAllAmenities();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		  List<AmenityType> result = new LinkedList<>();
+
+	@Transactional(readOnly = true)
+	public List<AmenityData> retrieveAllAmenities() {
+		List<Amenity>amenities = amenityDao.findAll();
+		List<AmenityData> result = new LinkedList<>();
 		
-		for(AmenityType amenityType: Amenities) {
-			Amenity adata = new Amenity();
-		
-			adata.getAmenities();
-			
-			result.add(amenityType);
-		}
-		
-		
-	return Amenities;
+		for(Amenity amenity : amenities) {
+	        AmenityData amenityData = new AmenityData(amenity);
+	        result.add(amenityData); 
+	    }
+	    return result;
 	
 	}
 
