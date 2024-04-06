@@ -3,7 +3,6 @@ package national.park.controller;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,10 +16,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
+import national.park.controller.model.AmenityData;
 import national.park.controller.model.ParkData;
 import national.park.controller.model.VisitorData;
 import national.park.entity.Amenity;
-import national.park.service.AmenityData;
 import national.park.service.ParkService;
 
 @RestController
@@ -81,7 +80,7 @@ public class ParkController {
 				return parkService.savePark(visitorId, parkData);
 			}
 	
-	@GetMapping("/amenity")
+	@GetMapping("/amenity/amenity_type")
 	public List<AmenityData> retrieveAllAmenities(){
 		log.info("Retrieving all amenities");
 		return parkService.retrieveAllAmenities();

@@ -12,6 +12,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import national.park.controller.model.AmenityData;
 import national.park.controller.model.ParkData;
 import national.park.controller.model.VisitorData;
 import national.park.dao.AmenityDao;
